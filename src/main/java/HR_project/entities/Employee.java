@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
     private String id;
 
@@ -32,6 +31,7 @@ public class Employee {
     private String phone;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private EmployeeStatus status = EmployeeStatus.INACTIVE;
 
     @Column(name = "visible")

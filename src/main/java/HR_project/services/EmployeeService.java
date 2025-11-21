@@ -15,7 +15,7 @@ public interface EmployeeService {
     /**Method uses for update
      * @return Employee's updated dto
      * */
-    EmployeeResponseDTO update(EmployeeUpdateDTO updateDto);
+    EmployeeResponseDTO update(String id,EmployeeUpdateDTO updateDto);
     /**Method uses for deletion
      * @return true/false
      * */

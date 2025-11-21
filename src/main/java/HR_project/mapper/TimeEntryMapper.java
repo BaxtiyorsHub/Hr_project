@@ -1,4 +1,8 @@
 package HR_project.mapper;
 
-public class TimeEntryMapper {
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface TimeEntryMapper {
+
 }
