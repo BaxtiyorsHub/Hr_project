@@ -1,21 +1,22 @@
 package HR_project.controllers;
 
-import HR_project.dtos.employee.EmployeeCreateDTO;
+import HR_project.dtos.employee.EmployeeDTO;
 import HR_project.dtos.employee.EmployeeResponseDTO;
-import HR_project.dtos.employee.EmployeeUpdateDTO;
 import HR_project.services.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("NullableProblems")
 @RestController
-@RequestMapping("/api/v1/employees")
+@RequestMapping("/api/v1/employee")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -27,26 +28,26 @@ public class EmployeeController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping
-    public ResponseEntity<EmployeeResponseDTO> create(@Valid @RequestBody EmployeeCreateDTO data) {
+    public ResponseEntity<EmployeeResponseDTO> create(@Valid @RequestBody EmployeeDTO data) {
         return ResponseEntity.ok(employeeService.create(data));
     }
 
     @Operation(summary = "Update employee", description = "Update existing employee by ID")
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDTO> update(@PathVariable String id,
-                                                      @Valid @RequestBody EmployeeUpdateDTO data) {
+    public ResponseEntity<EmployeeResponseDTO> update(@PathVariable @NotBlank String id,
+                                                      @Valid @RequestBody EmployeeDTO data) {
         return ResponseEntity.ok(employeeService.update(id, data));
     }
 
     @Operation(summary = "Get employee by ID", description = "Retrieve employee details by their ID")
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDTO> findById(@PathVariable String id) {
+    public ResponseEntity<EmployeeResponseDTO> findById(@PathVariable @NotBlank String id) {
         return ResponseEntity.ok(employeeService.get(id));
     }
 
     @Operation(summary = "Delete employee", description = "Delete employee by ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable String id) {
+    public ResponseEntity<Boolean> delete(@PathVariable @NotBlank String id) {
         return ResponseEntity.ok(employeeService.delete(id));
     }
 

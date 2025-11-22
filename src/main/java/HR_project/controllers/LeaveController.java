@@ -6,7 +6,6 @@ import HR_project.services.LeaveService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/leaves")
 @RequiredArgsConstructor
+@SuppressWarnings("NullableProblems")
 public class LeaveController {
 
     private final LeaveService leaveService;
@@ -22,7 +22,7 @@ public class LeaveController {
     @Operation(summary = "Apply for leave", description = "Submit a leave request for a specific employee")
     @PostMapping("/apply")
     public ResponseEntity<LeaveResponseDTO> applyLeave(@Valid @RequestBody LeaveApplyDTO dto) {
-        return new ResponseEntity<>(leaveService.applyLeave(dto), HttpStatus.CREATED);
+        return ResponseEntity.ok(leaveService.applyLeave(dto));
     }
 
     @Operation(summary = "Get all leave requests", description = "Retrieve all leave requests in the system")

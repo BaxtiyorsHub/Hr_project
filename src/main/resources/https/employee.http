@@ -3,4 +3,4 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ### Create employee
-POST localhost:8080/v1/employee
+POST localhost:8080/api/v1/employee

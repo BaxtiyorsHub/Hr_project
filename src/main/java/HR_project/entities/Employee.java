@@ -24,9 +24,6 @@ public class Employee {
     @Column(name = "surname")
     private String lastName;
 
-    @Column(name = "position")
-    private String position;
-
     @Column(name = "phone", unique = true)
     private String phone;
 
