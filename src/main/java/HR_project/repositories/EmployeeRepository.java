@@ -14,6 +14,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     @Modifying
     @Transactional
-    @Query("update Employee e set e.visible=false where e.id=?1 ")
+    @Query("update Employee e set e.visible = false where e.id=?1 ")
     boolean softDeleteById(@NotBlank String id);
 }

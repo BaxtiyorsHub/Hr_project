@@ -34,6 +34,12 @@ public class Employee {
     @Column(name = "visible")
     private boolean visible = true;
 
+    @Column(name = "department_id")
+    private String departmentId;
+
+    @Column(name = "position")
+    private String position;
+
     @Column(name = "created_date")
     @CreationTimestamp
     @Setter(AccessLevel.NONE)

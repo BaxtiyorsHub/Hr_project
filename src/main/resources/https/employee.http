@@ -1,23 +1,33 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
-
 ### Create employee
-POST localhost:8080/api/v1/employee
+POST localhost:8080/api/v1/employee/create
 Content-Type: application/json
 
 {
-  "firstName": "Suhrab",
-  "lastName": "Qarshiyev",
-  "phoneNumber": "+998900986269"
+  "firstName": "Jamshid",
+  "lastName": "Janibekov",
+  "phoneNumber": "+111111111998942227223"
 }
 
 ### Update employee
-PUT localhost:8080/api/v1/employee/06573804-b63d-47f9-97e8-56b0c5e5c62d
+PUT localhost:8080/api/v1/employee/dca7c195-89d2-4cc4-a19c-be5e07e37db5
 Content-Type: application/json
 
 {
   "firstName": "Baxtiyor",
   "lastName": "Yusupov",
-  "phoneNumber": "+998900641092"
+  "phoneNumber": "+998900986269"
+}
+
+### Get by id
+GET localhost:8080/api/v1/employee/dca7c195-89d2-4cc4-a19c-be5e07e37db5
+
+### Get all with pagination
+GET localhost:8080/api/v1/employee/all?page=3&size=3
+
+### Filter with pagination
+GET localhost:8080/api/v1/employee/search?page=1&size=5
+Content-Type: application/json
+
+{
+  "query": "+998"
 }

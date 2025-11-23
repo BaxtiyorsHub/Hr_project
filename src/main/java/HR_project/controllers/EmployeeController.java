@@ -1,5 +1,6 @@
 package HR_project.controllers;
 
+import HR_project.dtos.FilterDTO;
 import HR_project.dtos.employee.EmployeeDTO;
 import HR_project.dtos.employee.EmployeeResponseDTO;
 import HR_project.services.EmployeeService;
@@ -9,10 +10,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @SuppressWarnings("NullableProblems")
 @RestController
@@ -27,7 +28,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "200", description = "Employee created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<EmployeeResponseDTO> create(@Valid @RequestBody EmployeeDTO data) {
         return ResponseEntity.ok(employeeService.create(data));
     }
@@ -52,8 +53,17 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Get all employees", description = "Retrieve list of all employees")
-    @GetMapping
-    public ResponseEntity<List<EmployeeResponseDTO>> findAll() {
-        return ResponseEntity.ok(employeeService.getAll());
+    @GetMapping("/all")
+    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(employeeService.getAll(page-1, size));
+    }
+
+    @Operation(summary = "Search by query", description = "Retrieve list of all employees")
+    @GetMapping("/search")
+    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam int page,
+                                                            @RequestParam int size,
+                                                            @RequestBody @Valid FilterDTO filterQuery) {
+        return ResponseEntity.ok(employeeService.search(page-1, size, filterQuery));
     }
 }

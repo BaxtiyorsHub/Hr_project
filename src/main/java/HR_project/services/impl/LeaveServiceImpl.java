@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class LeaveServiceImpl implements LeaveService {
+
     private final LeaveRequestRepository repository;
     private final LeaveMapper mapper;
 
