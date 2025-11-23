@@ -10,7 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "profile")
+@Table(name = "employee")
 @Getter
 @Setter
 public class Employee {
@@ -25,7 +25,7 @@ public class Employee {
     private String lastName;
 
     @Column(name = "phone", unique = true)
-    private String phone;
+    private String phoneNumber;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

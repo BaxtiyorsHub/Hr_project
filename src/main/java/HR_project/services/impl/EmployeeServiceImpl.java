@@ -44,8 +44,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             byId.setFirstName(updateDto.getFirstName());
         if (!updateDto.getLastName().equalsIgnoreCase(byId.getLastName()))
             byId.setLastName(updateDto.getLastName());
-        if (!updateDto.getPhoneNumber().equals(byId.getPhone()))
-            byId.setPhone(updateDto.getPhoneNumber());
+        if (!updateDto.getPhoneNumber().equals(byId.getPhoneNumber()))
+            byId.setPhoneNumber(updateDto.getPhoneNumber());
 
         return mapper.toDTO(repository.save(byId));
     }

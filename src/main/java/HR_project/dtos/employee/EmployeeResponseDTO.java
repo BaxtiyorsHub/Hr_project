@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EmployeeResponseDTO {
 
