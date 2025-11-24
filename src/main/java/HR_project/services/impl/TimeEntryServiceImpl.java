@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
         if (existing.isPresent()) {
             TimeEntry timeEntry = existing.get();
-            timeEntry.setCheckInTime(dto.getCheckInTime());
+            timeEntry.setCheckInTime(LocalDateTime.now());
             timeEntry.setLateStatus(dto.isLateStatus());
             return mapper.toDTO(repository.save(timeEntry));
         }
@@ -52,7 +53,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
         if (existing.isPresent()) {
             TimeEntry timeEntry = existing.get();
-            timeEntry.setCheckOutTime(dto.getCheckOutTime());
+            timeEntry.setCheckOutTime(LocalDateTime.now());
             return mapper.toDTO(repository.save(timeEntry));
         } else {
             TimeEntry entity = mapper.toEntity(dto);

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 @SuppressWarnings("NullableProblems")
-public interface TimeEntryRepository extends JpaRepository<TimeEntry, Long> {
+public interface TimeEntryRepository extends JpaRepository<TimeEntry, String> {
 
     Optional<TimeEntry> findByEmployeeIdAndDate(String employeeId, LocalDate date);
 

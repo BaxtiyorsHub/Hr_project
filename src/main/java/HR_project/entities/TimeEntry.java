@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class TimeEntry {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
-    private Long id;
+    private String id;
 
     @Column(name = "employee_id" , nullable = false)
     private String employeeId;

@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
+    /**Method updates visibility of employee entity
+     * @param id Employee's id
+     * @return True/False
+     * */
     @Modifying
     @Transactional
     @Query("update Employee e set e.visible = false where e.id=?1 ")

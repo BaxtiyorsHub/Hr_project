@@ -30,7 +30,7 @@ public class LeaveController {
     public ResponseEntity<Page<LeaveResponseDTO>> getAllLeaves(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
-        return ResponseEntity.ok(leaveService.getAllLeaves(page, size));
+        return ResponseEntity.ok(leaveService.getAllLeaves(page-1, size));
     }
 
     @Operation(summary = "Get leave request by ID", description = "Retrieve a leave request by its ID")

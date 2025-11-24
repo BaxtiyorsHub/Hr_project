@@ -10,6 +10,7 @@ import HR_project.repositories.EmployeeRepository;
 import HR_project.services.EmployeeService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,41 +33,49 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * Method creates employees
-     *
-     * @return created EmployeeResponseDTO
+     * @param createDto DTO which comes from API for creation
+     * @return Created EmployeeResponseDTO
      *
      */
     @Override
-    public EmployeeResponseDTO create(@Valid @NotNull EmployeeDTO createDto) {
+    public EmployeeResponseDTO create(@Valid EmployeeDTO createDto) {
         Employee employee = mapper.toEntity(createDto);
         return mapper.toDTO(repository.save(employee));
     }
 
     /**
      * Method updates employees
-     *
-     * @return updated EmployeeResponseDTO
+     * @param id Employee's id
+     * @param updateDto updates of fields
+     * @return Updated EmployeeResponseDTO
      *
      */
     @Override
-    public EmployeeResponseDTO update(@NotBlank String id, @NotNull @Valid EmployeeDTO updateDto) {
+    public EmployeeResponseDTO update(@NotBlank String id, @Valid EmployeeDTO updateDto) {
         Employee byId = repository.findById(id)
                 .orElseThrow(() -> new BadSituationException("Employee not found"));
+
+        /*
         if (!updateDto.getFirstName().equalsIgnoreCase(byId.getFirstName()))
             byId.setFirstName(updateDto.getFirstName());
         if (!updateDto.getLastName().equalsIgnoreCase(byId.getLastName()))
             byId.setLastName(updateDto.getLastName());
         if (!updateDto.getPhoneNumber().equals(byId.getPhoneNumber()))
             byId.setPhoneNumber(updateDto.getPhoneNumber());
+        if (!updateDto.getPosition().equalsIgnoreCase(byId.getPosition()))
+            byId.setPosition(updateDto.getPosition());
+        if (!updateDto.getDepartmentName().equalsIgnoreCase(byId.getDepartmentName()))
+            byId.setDepartmentName(updateDto.getDepartmentName());
+        */ // old code
 
+        mapper.updateEntity(updateDto, byId); // optimized code
         return mapper.toDTO(repository.save(byId));
     }
 
     /**
      * Method makes employee soft deletion
-     *
+     * @param id Employee's id to make soft delete
      * @return True/False
-     *
      */
     @Override
     public boolean delete(@NotBlank String id) {
@@ -75,9 +84,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * Method returns employee by id
-     *
-     * @return EmployeeResponseDTO by id
-     *
+     * @param id Employee's id
+     * @return EmployeeResponseDTO which found by id
      */
     @Override
     public EmployeeResponseDTO get(@NotBlank String id) {
@@ -88,7 +96,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * Method returns all employees
-     *
+     * @param page Number of pages
+     * @param size Number to set page size
      * @return List of EmployeeResponseDTOs
      *
      */
@@ -107,9 +116,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * Method makes searches
-     *
+     * @param page Number of pages
+     * @param size Number to set page size
      * @return Page of EmployeeResponseDTO
-     *
      */
     @Override
     public Page<EmployeeResponseDTO> search(int page, int size, FilterDTO filterQuery) {
@@ -124,12 +133,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageImpl<>(dtoList, pageRequest, totalCount);
     }
 
+    /**Method for get employee entity by id
+     * @param employeeId Employee's id
+     * @return Employee which found
+     * */
     @Override
     public Employee getEmployee(@NotBlank @Valid String employeeId) {
         return repository.findById(employeeId)
                 .orElseThrow(() -> new BadSituationException("Employee not found"));
     }
 
+   /**Method makes native query for filter/search
+    * @param page Number of pages
+    * @param size Number to set page size
+    * @param filterDTO Query dto
+    * @return Page
+    * */
     private Page<Employee> filterEmployees(FilterDTO filterDTO, int page, int size) {
 
         StringBuilder selectQuery = new StringBuilder("SELECT e FROM Employee e ");

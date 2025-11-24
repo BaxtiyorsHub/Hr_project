@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -54,15 +55,15 @@ public class EmployeeController {
 
     @Operation(summary = "Get all employees", description = "Retrieve list of all employees")
     @GetMapping("/all")
-    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "5") int size) {
+    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "0") @NotNull Integer page,
+                                                             @RequestParam(defaultValue = "5") @NotNull Integer size) {
         return ResponseEntity.ok(employeeService.getAll(page-1, size));
     }
 
     @Operation(summary = "Search by query", description = "Retrieve list of all employees")
     @GetMapping("/search")
-    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam int page,
-                                                            @RequestParam int size,
+    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam(defaultValue = "0") @NotNull Integer page,
+                                                            @RequestParam(defaultValue = "5") @NotNull Integer size,
                                                             @RequestBody @Valid FilterDTO filterQuery) {
         return ResponseEntity.ok(employeeService.search(page-1, size, filterQuery));
     }

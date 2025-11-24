@@ -5,53 +5,57 @@ import HR_project.dtos.employee.EmployeeDTO;
 import HR_project.dtos.employee.EmployeeResponseDTO;
 import HR_project.entities.Employee;
 import jakarta.validation.Valid;
-import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface EmployeeService {
     /**
-     * Method uses for creation
+     * Creates a new employee.
      *
-     * @return Employee's created DTO
-     *
+     * @param createDto request body
+     * @return created employee response
      */
-    EmployeeResponseDTO create(EmployeeDTO createDto);
+    EmployeeResponseDTO create(@Valid EmployeeDTO createDto);
 
     /**
-     * Method uses for update
+     * Updates existing employee.
      *
-     * @return Employee's updated dto
-     *
+     * @param id employee id
+     * @param updateDto new data
+     * @return updated employee response
      */
-    EmployeeResponseDTO update(String id, EmployeeDTO updateDto);
+    EmployeeResponseDTO update(String id, @Valid EmployeeDTO updateDto);
 
     /**
-     * Method uses for deletion
+     * Soft deletes employee.
      *
-     * @return true/false
-     *
+     * @param id employee id
      */
     boolean delete(String id);
 
     /**
-     * Method uses for get employee by id
+     * Gets employee by ID.
      *
-     * @return EmployeeResponseDTO
-     *
+     * @param id employee id
+     * @return employee response dto
      */
     EmployeeResponseDTO get(String id);
 
     /**
-     * Method uses for get all employees by pagination
+     * Gets all employees by pagination.
      *
-     * @return List of EmployeeResponseDTO
-     *
+     * @return page of employee responses
      */
     Page<EmployeeResponseDTO> getAll(int page, int size);
 
-    Page<EmployeeResponseDTO> search(int page, int size, FilterDTO filterQuery);
+    /**
+     * Searches employees by filter.
+     *
+     * @return filtered page of employees
+     */
+    Page<EmployeeResponseDTO> search(int page, int size, @Valid FilterDTO filterQuery);
 
+    /**
+     * Internal method for getting employee entity.
+     */
     Employee getEmployee(String employeeId);
 }

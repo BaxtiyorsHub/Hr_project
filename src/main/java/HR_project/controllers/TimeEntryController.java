@@ -32,7 +32,7 @@ public class TimeEntryController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ){
-        return ResponseEntity.ok(service.reports(page, size));
+        return ResponseEntity.ok(service.reports(page-1, size));
     }
 
 }
