@@ -29,11 +29,11 @@ public class TimeEntryController {
     }
 
     @GetMapping("/weekly-report")
-    public ResponseEntity<Page<TimeEntryResponse>> entryReport(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<TimeEntryResponse>> entryReport(@RequestParam(defaultValue = "1") int page,
                                                                @RequestParam(defaultValue = "5") int size) {
-        if (page < 0) page = 0;
-        if (size < 0) size = 5;
-        return ResponseEntity.ok(service.reports(page, size));
+        if (page < 1) page = 1;
+        if (size < 1) size = 5;
+        return ResponseEntity.ok(service.reports(page-1, size));
     }
 
 }

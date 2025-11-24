@@ -36,11 +36,11 @@ public class LeaveController {
     @Operation(summary = "Get all leave requests", description = "Retrieve all leave requests in the system")
     @GetMapping("/all")
     public ResponseEntity<Page<LeaveResponseDTO>> getAllLeaves(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size) {
-        if (page < 0) page = 0;
-        if (size < 0) size = 5;
-        return ResponseEntity.ok(leaveService.getAllLeaves(page, size));
+        if (page < 1) page = 1;
+        if (size < 1) size = 5;
+        return ResponseEntity.ok(leaveService.getAllLeaves(page-1, size));
     }
 
     @Operation(summary = "Get leave request by ID", description = "Retrieve a leave request by its ID")

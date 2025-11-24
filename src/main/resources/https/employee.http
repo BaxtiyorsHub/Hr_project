@@ -3,27 +3,27 @@ POST localhost:8080/api/v1/employee/create
 Content-Type: application/json
 
 {
-  "firstName": "Baxtiyor",
-  "lastName": "Yusupov",
-  "phoneNumber": "900641092",
+  "firstName": "Suhrob",
+  "lastName": "Qarshiyev",
+  "phoneNumber": "900986269",
   "departmentName": "IT",
   "position": "Dasturchi"
 }
 
 ### Update employee
-PUT localhost:8080/api/v1/employee/7a87fd5c-c90e-425d-a2c2-648a9d759144
+PUT localhost:8080/api/v1/employee/b76e9e0a-9ff2-4c72-8907-1c8e29f933a7
 Content-Type: application/json
 
 {
-  "firstName": "Suhrabb",
-  "lastName": "Qarshiyyev",
+  "firstName": "Suhrab",
+  "lastName": "Qarshiyev",
   "phoneNumber": "+998900986269",
-  "departmentName": "IT",
+  "departmentName": "ROBOTEX",
   "position": "Menejer"
 }
 
 ### Get by id
-GET localhost:8080/api/v1/employee/7a87fd5c-c90e-425d-a2c2-648a9d759144
+GET localhost:8080/api/v1/employee/0a8c532c-9c88-4966-a136-23fd121a5f9f
 
 ### Get all with pagination
 GET localhost:8080/api/v1/employee/all?page=1&size=2

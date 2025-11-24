@@ -65,20 +65,20 @@ public class EmployeeController {
 
     @Operation(summary = "Get all employees", description = "Retrieve list of all employees")
     @GetMapping("/all")
-    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "1") int page,
                                                              @RequestParam(defaultValue = "5") int size) {
-        if (page < 0) page = 0;
-        if (size < 0) size = 5;
-        return ResponseEntity.ok(employeeService.getAll(page, size));
+        if (page < 1) page = 1;
+        if (size < 1) size = 5;
+        return ResponseEntity.ok(employeeService.getAll(page-1, size));
     }
 
     @Operation(summary = "Search by query", description = "Retrieve list of all employees")
     @GetMapping("/search")
-    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam(defaultValue = "1") int page,
                                                             @RequestParam(defaultValue = "5") int size,
                                                             @RequestBody @Valid FilterDTO filterQuery) {
-        if (page < 0) page = 0;
-        if (size < 0) size = 5;
-        return ResponseEntity.ok(employeeService.search(page, size, filterQuery));
+        if (page < 1) page = 1;
+        if (size < 1) size = 5;
+        return ResponseEntity.ok(employeeService.search(page-1, size, filterQuery));
     }
 }
