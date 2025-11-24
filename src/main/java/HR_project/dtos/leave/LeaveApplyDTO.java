@@ -14,12 +14,16 @@ public class LeaveApplyDTO {
 
     @NotBlank(message = "Employee id is required")
     private String employeeId;
+
     @NotNull(message = "Leave type mustn't be empty")
     private LeaveType leaveType;
+
     @NotBlank(message = "Reason is required")
     private String reason;
+
     @NotNull(message = "Starting date musn't be empty")
     private LocalDate startDate;
+
     @NotNull(message = "Ending date musn't be empty")
     private LocalDate endDate;
 

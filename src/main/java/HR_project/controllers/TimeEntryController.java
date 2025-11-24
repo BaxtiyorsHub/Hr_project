@@ -18,21 +18,21 @@ public class TimeEntryController {
     private final TimeEntryService service;
 
     @PostMapping()
-    public ResponseEntity<TimeEntryResponse> entry(@RequestBody @Valid TimeDTO dto){
+    public ResponseEntity<TimeEntryResponse> entry(@RequestBody @Valid TimeDTO dto) {
         return ResponseEntity.ok(service.entry(dto));
     }
 
     @PutMapping("/leave")
-    public ResponseEntity<TimeEntryResponse> leave(@RequestBody @Valid TimeDTO dto){
+    public ResponseEntity<TimeEntryResponse> leave(@RequestBody @Valid TimeDTO dto) {
         return ResponseEntity.ok(service.leave(dto));
     }
 
     @GetMapping("/weekly-report")
-    public  ResponseEntity<Page<TimeEntryResponse>> entryReport(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
-    ){
-        return ResponseEntity.ok(service.reports(page-1, size));
+    public ResponseEntity<Page<TimeEntryResponse>> entryReport(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size) {
+        if (page < 0) page = 0;
+        if (size < 0) size = 5;
+        return ResponseEntity.ok(service.reports(page, size));
     }
 
 }

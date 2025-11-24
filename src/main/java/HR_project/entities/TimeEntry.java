@@ -26,11 +26,9 @@ public class TimeEntry {
     private Employee employee;
 
     @Column(name = "date")
-    @CreationTimestamp
     private LocalDate date;
 
     @Column(name = "check_in_time")
-    @CreationTimestamp
     private LocalDateTime checkInTime;
 
     @Column(name = "check_out_time")

@@ -10,10 +10,8 @@ import HR_project.repositories.EmployeeRepository;
 import HR_project.services.EmployeeService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -66,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             byId.setPosition(updateDto.getPosition());
         if (!updateDto.getDepartmentName().equalsIgnoreCase(byId.getDepartmentName()))
             byId.setDepartmentName(updateDto.getDepartmentName());
-        */ // old code
+         */ // old code
 
         mapper.updateEntity(updateDto, byId); // optimized code
         return mapper.toDTO(repository.save(byId));
@@ -191,12 +189,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         params.forEach(select::setParameter);
         var employees = select.getResultList();
 
-        // Execute count query
         Query count = entityManager.createQuery(countQuery.toString());
         params.forEach(count::setParameter);
         Long total = (Long) count.getSingleResult();
 
-        return new PageImpl<>(employees, PageRequest.of(page, size), total);
+        return new PageImpl<Employee>(employees, PageRequest.of(page, size), total);
     }
 
 }

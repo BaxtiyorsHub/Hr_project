@@ -15,18 +15,19 @@ public class TimeEntryResponse {
 
     private String id;
 
-    private String employeeId;          // employeeId field
+    private String employeeId;
 
-    private EmployeeResponseDTO employee;    // agar Employee fullName ko‘rsatmoqchi bo‘lsangiz
+    private EmployeeResponseDTO employee;
 
-    private LocalDate date;             // qaysi kun
+    private LocalDate date;
 
     private LocalDateTime checkInTime;
+
     private LocalDateTime checkOutTime;
 
-    private boolean lateStatus;         // kechikkan yoki yo‘q
+    private boolean lateStatus;
 
-    private boolean visible;            // ko‘rinadiganligi
+    private boolean visible;
 
-    private LocalDateTime createdDate;  // yozilgan vaqt
+    private LocalDateTime createdDate;
 }

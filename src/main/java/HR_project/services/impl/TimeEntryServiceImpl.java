@@ -3,19 +3,19 @@ package HR_project.services.impl;
 import HR_project.dtos.time.TimeDTO;
 import HR_project.dtos.time.TimeEntryResponse;
 import HR_project.entities.TimeEntry;
+import HR_project.exceptions.BadSituationException;
 import HR_project.mapper.TimeEntryMapper;
 import HR_project.repositories.TimeEntryRepository;
 import HR_project.services.TimeEntryService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,51 +25,82 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     private final TimeEntryRepository repository;
     private final TimeEntryMapper mapper;
 
+    /**
+     * Registers a check-in time for an employee. If an entry for today already exists,
+     * it updates the check-in time and late status.
+     *
+     * @param dto TimeDTO containing employeeId and lateStatus
+     * @return TimeEntryResponse with saved data
+     * @throws BadSituationException if employeeId is null
+     */
     @Override
+    @Transactional
     public TimeEntryResponse entry(@Valid TimeDTO dto) {
-        TimeEntry entity = mapper.toEntity(dto);
+        LocalDate today = LocalDate.now();
 
-        Optional<TimeEntry> existing = repository.findByEmployeeIdAndDate(
-                dto.getEmployeeId(),
-                LocalDate.now()
-        );
+        TimeEntry timeEntry = getOrCreateTimeEntry(dto.getEmployeeId(), today);
 
-        if (existing.isPresent()) {
-            TimeEntry timeEntry = existing.get();
-            timeEntry.setCheckInTime(LocalDateTime.now());
-            timeEntry.setLateStatus(dto.isLateStatus());
-            return mapper.toDTO(repository.save(timeEntry));
-        }
+        timeEntry.setCheckInTime(LocalDateTime.now());
+        timeEntry.setLateStatus(dto.isLateStatus());
 
-        return mapper.toDTO(repository.save(entity));
+        repository.save(timeEntry);
+
+        return mapper.toDTO(timeEntry);
     }
 
+    /**
+     * Registers a check-out time for an employee
+     * @param dto TimeDTO containing employeeId
+     * @return TimeEntryResponse with saved data
+     * @throws BadSituationException if no check-in exists for today
+     */
     @Override
+    @Transactional
     public TimeEntryResponse leave(@Valid TimeDTO dto) {
-        Optional<TimeEntry> existing = repository.findByEmployeeIdAndDate(
-                dto.getEmployeeId(),
-                LocalDate.now()
-        );
+        LocalDate today = LocalDate.now();
 
-        if (existing.isPresent()) {
-            TimeEntry timeEntry = existing.get();
-            timeEntry.setCheckOutTime(LocalDateTime.now());
-            return mapper.toDTO(repository.save(timeEntry));
-        } else {
-            TimeEntry entity = mapper.toEntity(dto);
-            return mapper.toDTO(repository.save(entity));
-        }
+        TimeEntry timeEntry = repository.findByEmployeeIdAndDate(dto.getEmployeeId(), today)
+                .orElseThrow(() -> new BadSituationException("Cannot check out before check-in"));
+
+        timeEntry.setCheckOutTime(LocalDateTime.now());
+
+        repository.save(timeEntry);
+
+        return mapper.toDTO(timeEntry);
     }
 
+    /**
+     * Retrieves a paginated list of all time entries.
+     *
+     * @param page page number
+     * @param size page size
+     * @return {@link Page} of {@link TimeEntryResponse}
+     */
     @Override
     public Page<TimeEntryResponse> reports(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
+        return repository.findAll(pageRequest)
+                .map(mapper::toDTO);
+    }
 
-        var saved = repository.findAll(pageRequest);
-        long totalElements = saved.getTotalElements();
+    /**
+     * Helper method to get an existing time entry for today or create a new one.
+     *
+     * @param employeeId Employee identifier
+     * @param date       LocalDate for the entry
+     * @return {@link TimeEntry} entity
+     */
+    private TimeEntry getOrCreateTimeEntry(String employeeId, LocalDate date) {
+        if (employeeId == null || employeeId.isBlank()) {
+            throw new BadSituationException("Employee ID cannot be null or blank");
+        }
 
-        List<TimeEntryResponse> list = saved.map(mapper::toDTO).toList();
-
-        return new PageImpl<>(list, pageRequest, totalElements);
+        Optional<TimeEntry> existing = repository.findByEmployeeIdAndDate(employeeId, date);
+        return existing.orElseGet(() -> {
+            TimeEntry entry = new TimeEntry();
+            entry.setEmployeeId(employeeId);
+            entry.setDate(date);
+            return entry;
+        });
     }
 }

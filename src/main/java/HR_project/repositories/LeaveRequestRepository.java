@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LeaveRequestRepository extends JpaRepository<Leave, String> {
 
+    /**Make updates
+     * @param id Application id to update
+     * @return True/False
+     * */
     @Modifying
     @Transactional
     @Query("update Leave set visible = false where id=?1 and visible=true ")

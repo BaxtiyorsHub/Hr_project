@@ -4,6 +4,7 @@ import HR_project.dtos.FilterDTO;
 import HR_project.dtos.employee.EmployeeDTO;
 import HR_project.dtos.employee.EmployeeResponseDTO;
 import HR_project.services.EmployeeService;
+import HR_project.utils.PhoneChecker;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,14 +32,24 @@ public class EmployeeController {
     })
     @PostMapping("/create")
     public ResponseEntity<EmployeeResponseDTO> create(@Valid @RequestBody EmployeeDTO data) {
-        return ResponseEntity.ok(employeeService.create(data));
+        if (data != null && data.getPhoneNumber() !=null) {
+            String normalizePhone = PhoneChecker.normalizePhone(data.getPhoneNumber());
+            data.setPhoneNumber(normalizePhone);
+            return ResponseEntity.ok(employeeService.create(data));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @Operation(summary = "Update employee", description = "Update existing employee by ID")
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> update(@PathVariable @NotBlank String id,
                                                       @Valid @RequestBody EmployeeDTO data) {
-        return ResponseEntity.ok(employeeService.update(id, data));
+        if (data != null && data.getPhoneNumber() !=null) {
+            String normalizePhone = PhoneChecker.normalizePhone(data.getPhoneNumber());
+            data.setPhoneNumber(normalizePhone);
+            return ResponseEntity.ok(employeeService.update(id, data));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @Operation(summary = "Get employee by ID", description = "Retrieve employee details by their ID")
@@ -55,16 +66,20 @@ public class EmployeeController {
 
     @Operation(summary = "Get all employees", description = "Retrieve list of all employees")
     @GetMapping("/all")
-    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "0") @NotNull Integer page,
-                                                             @RequestParam(defaultValue = "5") @NotNull Integer size) {
-        return ResponseEntity.ok(employeeService.getAll(page-1, size));
+    public ResponseEntity<Page<EmployeeResponseDTO>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "5") int size) {
+        if (page < 0) page = 0;
+        if (size < 0) size = 5;
+        return ResponseEntity.ok(employeeService.getAll(page, size));
     }
 
     @Operation(summary = "Search by query", description = "Retrieve list of all employees")
     @GetMapping("/search")
-    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam(defaultValue = "0") @NotNull Integer page,
-                                                            @RequestParam(defaultValue = "5") @NotNull Integer size,
+    public ResponseEntity<Page<EmployeeResponseDTO>> search(@RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "5") int size,
                                                             @RequestBody @Valid FilterDTO filterQuery) {
-        return ResponseEntity.ok(employeeService.search(page-1, size, filterQuery));
+        if (page < 0) page = 0;
+        if (size < 0) size = 5;
+        return ResponseEntity.ok(employeeService.search(page, size, filterQuery));
     }
 }

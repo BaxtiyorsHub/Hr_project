@@ -14,6 +14,12 @@ Content-Type: application/json
   "endDate": "2025-11-30"
 }
 
+### Get all
+GET localhost:8080/api/v1/leaves/all
+
+### Get by id
+GET localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b
+
 ### Approve leave
 PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/approve
 
@@ -21,4 +27,4 @@ PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/approve
 PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/reject
 
 ### Delete applicatoin
-DELETE localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/delete
+DELETE localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b

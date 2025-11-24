@@ -10,13 +10,13 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 
-    /**Method castes to Entity
+    /**Converts a {@link EmployeeDTO} dto to {@link Employee} entity
      * @param dto Employee DTO which comes API
-     * @return Created Employee Entity
+     * @return Employee Entity
      * */
     Employee toEntity(EmployeeDTO dto);
 
-    /**Method castes to DTO for response
+    /**Converts {@link Employee} entity to {@link EmployeeResponseDTO} DTO
      * @param employee Employee entity
      * @return EmployeeResponseDTO
      * */
@@ -24,8 +24,6 @@ public interface EmployeeMapper {
 
     /**Method makes update
      * @param updateDto Dto for update
-     * @param byId Saved Entity from repository
-     * @return Updated Employee entity
-     * */
+     * @param byId Saved Entity from repository */
     void updateEntity(@Valid EmployeeDTO updateDto, @MappingTarget Employee byId);
 }
