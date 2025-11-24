@@ -13,12 +13,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,20 +40,13 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     @Override
     @Transactional
     public TimeEntryResponse entry(@Valid TimeDTO dto) {
-        LocalDate today = LocalDate.now();
-
-        TimeEntry timeEntry = getOrCreateTimeEntry(dto.getEmployeeId(), today);
-
-        timeEntry.setCheckInTime(LocalDateTime.now());
-        timeEntry.setLateStatus(dto.isLateStatus());
-
-        repository.save(timeEntry);
-
-        return mapper.toDTO(timeEntry);
+        TimeEntry entity = mapper.toEntity(dto);
+        return mapper.toDTO(repository.save(entity));
     }
 
     /**
      * Registers a check-out time for an employee
+     *
      * @param employeeID ID of {@link Employee}
      * @return TimeEntryResponse with saved data
      * @throws BadSituationException if no check-in exists for today
@@ -59,9 +54,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     @Override
     @Transactional
     public TimeEntryResponse leave(@NotBlank String employeeID) {
-        LocalDate today = LocalDate.now();
-
-        TimeEntry timeEntry = repository.findByEmployeeIdAndDate(employeeID, today)
+        TimeEntry timeEntry = repository.findFirstByEmployeeIdAndVisibleTrueOrderByCreatedDateDesc(employeeID)
                 .orElseThrow(() -> new BadSituationException("Cannot check out before check-in"));
 
         timeEntry.setCheckOutTime(LocalDateTime.now());
@@ -79,30 +72,22 @@ public class TimeEntryServiceImpl implements TimeEntryService {
      * @return {@link Page} of {@link TimeEntryResponse}
      */
     @Override
-    public Page<TimeEntryResponse> reports(int page, int size) {
+    public Page<TimeEntryResponse> weeklyReports(String employeeId, int page, int size) {
+
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
+
         PageRequest pageRequest = PageRequest.of(page, size);
-        return repository.findAll(pageRequest)
-                .map(mapper::toDTO);
+
+        List<TimeEntryResponse> list = repository
+                .findWeeklyEntries(employeeId, startOfWeek, endOfWeek)
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+
+
+        return new PageImpl<>(list, pageRequest, list.size());
     }
 
-    /**
-     * Helper method to get an existing time entry for today or create a new one.
-     *
-     * @param employeeId Employee identifier
-     * @param date       LocalDate for the entry
-     * @return {@link TimeEntry} entity
-     */
-    private TimeEntry getOrCreateTimeEntry(String employeeId, LocalDate date) {
-        if (employeeId == null || employeeId.isBlank()) {
-            throw new BadSituationException("Employee ID cannot be null or blank");
-        }
-
-        Optional<TimeEntry> existing = repository.findByEmployeeIdAndDate(employeeId, date);
-        return existing.orElseGet(() -> {
-            TimeEntry entry = new TimeEntry();
-            entry.setEmployeeId(employeeId);
-            entry.setDate(date);
-            return entry;
-        });
-    }
 }

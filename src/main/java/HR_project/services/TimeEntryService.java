@@ -32,5 +32,5 @@ public interface TimeEntryService {
      * @param size Number of records per page
      * @return {@link Page} of {@link TimeEntryResponse}
      */
-    Page<TimeEntryResponse> reports(int page, int size);
+    Page<TimeEntryResponse> weeklyReports(@NotBlank String employeeId, int page, int size);
 }

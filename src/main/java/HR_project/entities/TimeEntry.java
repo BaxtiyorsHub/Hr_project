@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "working_hours")
+@Table(name = "time_entry")
 @Setter
 @Getter
 public class TimeEntry {
@@ -26,9 +26,11 @@ public class TimeEntry {
     private Employee employee;
 
     @Column(name = "date")
+    @CreationTimestamp
     private LocalDate date;
 
     @Column(name = "check_in_time")
+    @CreationTimestamp
     private LocalDateTime checkInTime;
 
     @Column(name = "check_out_time")

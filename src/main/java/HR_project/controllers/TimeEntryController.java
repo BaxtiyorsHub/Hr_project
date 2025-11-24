@@ -23,17 +23,18 @@ public class TimeEntryController {
         return ResponseEntity.ok(service.entry(dto));
     }
 
-    @PutMapping("/leave")
-    public ResponseEntity<TimeEntryResponse> leave(@RequestBody @NotBlank String employeeID) {
+    @PutMapping("/leave/{employeeID}")
+    public ResponseEntity<TimeEntryResponse> leave(@PathVariable @NotBlank String employeeID) {
         return ResponseEntity.ok(service.leave(employeeID));
     }
 
-    @GetMapping("/weekly-report")
+    @GetMapping("/weekly-report/{id}")
     public ResponseEntity<Page<TimeEntryResponse>> entryReport(@RequestParam(defaultValue = "1") int page,
-                                                               @RequestParam(defaultValue = "5") int size) {
+                                                               @RequestParam(defaultValue = "5") int size,
+                                                               @PathVariable @NotBlank String id) {
         if (page < 1) page = 1;
         if (size < 1) size = 5;
-        return ResponseEntity.ok(service.reports(page-1, size));
+        return ResponseEntity.ok(service.weeklyReports(id, page - 1, size));
     }
 
 }
