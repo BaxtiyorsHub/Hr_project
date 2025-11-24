@@ -62,7 +62,7 @@ public class LeaveController {
     }
 
     @Operation(summary = "Delete leave request", description = "Reject a pending leave request")
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> softDeleteLeave(@PathVariable @NotBlank String id) {
         return ResponseEntity.ok(leaveService.softDeleteLeave(id));
     }

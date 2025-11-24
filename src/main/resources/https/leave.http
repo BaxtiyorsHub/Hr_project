@@ -7,9 +7,9 @@ POST localhost:8080/api/v1/leaves/apply
 Content-Type: application/json
 
 {
-  "employeeId": "3c8d540e-40e9-40f5-9cf3-ff6c3c9ca6ab",
-  "reason": "kasal",
-  "leaveType": "SICK",
+  "employeeId": "9ac326a5-6518-4292-adc3-aec9b8ed0485",
+  "reason": "Asal",
+  "leaveType": "SPECIAL",
   "startDate": "2025-11-25",
   "endDate": "2025-11-30"
 }
@@ -18,13 +18,13 @@ Content-Type: application/json
 GET localhost:8080/api/v1/leaves/all
 
 ### Get by id
-GET localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b
+GET localhost:8080/api/v1/leaves/5095e193-6496-444d-8faa-c0331741cd98
 
 ### Approve leave
-PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/approve
+PUT localhost:8080/api/v1/leaves/5095e193-6496-444d-8faa-c0331741cd98/approve
 
 ### Reject leave
-PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/reject
+PUT localhost:8080/api/v1/leaves/db2125fd-ead0-4d91-b58c-3e936379d82a/reject
 
 ### Delete applicatoin
-DELETE localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b
+DELETE localhost:8080/api/v1/leaves/6ed1f9a6-5ed2-4e98-aea2-dd00105b8e25
