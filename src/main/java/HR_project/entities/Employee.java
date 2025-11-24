@@ -27,18 +27,18 @@ public class Employee {
     @Column(name = "phone", unique = true)
     private String phoneNumber;
 
+    @Column(name = "department_name")
+    private String departmentName;
+
+    @Column(name = "position")
+    private String position;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EmployeeStatus status = EmployeeStatus.INACTIVE;
 
     @Column(name = "visible")
     private boolean visible = true;
-
-    @Column(name = "department_id")
-    private String departmentId;
-
-    @Column(name = "position")
-    private String position;
 
     @Column(name = "created_date")
     @CreationTimestamp

@@ -123,10 +123,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     private Page<Employee> filterEmployees(FilterDTO filterDTO, int page, int size) {
 
-        StringBuilder selectQuery = new StringBuilder("SELECT e FROM Employee e INNER JOIN Department d ON d.employee.id = e.id ");
-        StringBuilder countQuery = new StringBuilder("SELECT count(e) FROM Employee e INNER JOIN Department d ON d.employee.id = e.id ");
+        StringBuilder selectQuery = new StringBuilder("SELECT e FROM Employee e ");
+        StringBuilder countQuery = new StringBuilder("SELECT count(e) FROM Employee e ");
 
-        StringBuilder whereClause = new StringBuilder(" WHERE e.visible = true AND d.visible = true ");
+        StringBuilder whereClause = new StringBuilder(" WHERE e.visible = true ");
 
         Map<String, Object> params = new HashMap<>();
 
@@ -134,10 +134,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             whereClause.append(" AND (");
             whereClause.append(" lower(e.firstName) LIKE lower(:query) ");
             whereClause.append(" OR lower(e.lastName) LIKE lower(:query) ");
-            whereClause.append(" OR lower(e.phoneNumber) LIKE lower(:query) ");
+            whereClause.append(" OR e.phoneNumber LIKE :query ");
             whereClause.append(" OR lower(e.position) LIKE lower(:query) ");
-            whereClause.append(" OR lower(cast(e.status as string)) LIKE lower(:query) ");
-            whereClause.append(" OR lower(d.departmentName) LIKE lower(:query) ");
+            whereClause.append(" OR lower(e.status) LIKE lower(:query) ");
+            whereClause.append(" OR lower(e.departmentName) LIKE lower(:query) ");
             whereClause.append(" ) ");
             params.put("query", "%" + filterDTO.getQuery() + "%");
         }
@@ -152,16 +152,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else if (filterDTO.getEndingDate() != null) {
             whereClause.append(" AND e.createdDate <= :end ");
             params.put("end", filterDTO.getEndingDate());
-        }
-
-        if (filterDTO.getDepartmentName() != null && !filterDTO.getDepartmentName().isBlank()) {
-            whereClause.append(" AND lower(d.departmentName) LIKE lower(:deptName) ");
-            params.put("deptName", "%" + filterDTO.getDepartmentName() + "%");
-        }
-
-        if (filterDTO.getPosition() != null && !filterDTO.getPosition().isBlank()) {
-            whereClause.append(" AND lower(e.position) LIKE lower(:position) ");
-            params.put("position", "%" + filterDTO.getPosition() + "%");
         }
 
         selectQuery.append(whereClause);

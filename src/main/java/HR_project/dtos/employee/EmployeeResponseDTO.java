@@ -2,10 +2,9 @@ package HR_project.dtos.employee;
 
 import HR_project.enums.EmployeeStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mapstruct.MappingTarget;
 
 import java.time.LocalDateTime;
 
@@ -21,5 +20,7 @@ public class EmployeeResponseDTO {
     private EmployeeStatus status;
     private boolean visible;
     private LocalDateTime createdDate;
+    private String departmentName;
+    private String position;
 
 }

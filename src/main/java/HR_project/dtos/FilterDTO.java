@@ -13,7 +13,6 @@ public class FilterDTO {
     private LocalDateTime startingDate;
     private LocalDateTime endingDate;
 
-    private String departmentId;
     private String departmentName;
     private String position;
 
