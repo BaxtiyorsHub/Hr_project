@@ -14,28 +14,30 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class TimeEntry {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
-    private String id;
+    private Long id;
 
     @Column(name = "employee_id" , nullable = false)
-    private String employeeId; // String
+    private String employeeId;
 
     @JoinColumn(name = "employee_id" , insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
 
     @Column(name = "date")
-    private LocalDate date; // Qaysi kun
+    @CreationTimestamp
+    private LocalDate date;
 
     @Column(name = "check_in_time")
+    @CreationTimestamp
     private LocalDateTime checkInTime;
 
     @Column(name = "check_out_time")
     private LocalDateTime checkOutTime;
 
     @Column(name = "late_status")
-    private boolean lateStatus; // kechikkan yoki yo‘q
+    private boolean lateStatus;
 
     @Column(name = "visible")
     private boolean visible = true;

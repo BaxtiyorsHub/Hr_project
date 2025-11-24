@@ -1,10 +1,13 @@
 package HR_project.controllers;
 
-import HR_project.services.EmployeeService;
+import HR_project.dtos.time.TimeDTO;
+import HR_project.dtos.time.TimeEntryResponse;
 import HR_project.services.TimeEntryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/time-entry")
@@ -14,7 +17,22 @@ public class TimeEntryController {
 
     private final TimeEntryService service;
 
+    @PostMapping()
+    public ResponseEntity<TimeEntryResponse> entry(@RequestBody @Valid TimeDTO dto){
+        return ResponseEntity.ok(service.entry(dto));
+    }
 
+    @PutMapping("/leave")
+    public ResponseEntity<TimeEntryResponse> leave(@RequestBody @Valid TimeDTO dto){
+        return ResponseEntity.ok(service.leave(dto));
+    }
 
+    @GetMapping("/weekly-report")
+    public  ResponseEntity<Page<TimeEntryResponse>> entryReport(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ){
+        return ResponseEntity.ok(service.reports(page, size));
+    }
 
 }
