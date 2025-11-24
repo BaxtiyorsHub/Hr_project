@@ -2,4 +2,23 @@
 GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
-###
+### Apply leave
+POST localhost:8080/api/v1/leaves/apply
+Content-Type: application/json
+
+{
+  "employeeId": "3c8d540e-40e9-40f5-9cf3-ff6c3c9ca6ab",
+  "reason": "kasal",
+  "leaveType": "SICK",
+  "startDate": "2025-11-25",
+  "endDate": "2025-11-30"
+}
+
+### Approve leave
+PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/approve
+
+### Reject leave
+PUT localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/reject
+
+### Delete applicatoin
+DELETE localhost:8080/api/v1/leaves/75fd66bd-5855-4de9-afab-486b025ef75b/delete

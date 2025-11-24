@@ -98,7 +98,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         var dtos = repository.findAll(pageable);
         long totalElement = dtos.getTotalElements();
-        List<EmployeeResponseDTO> list = dtos.map(mapper::toDTO).toList();
+        List<EmployeeResponseDTO> list = dtos
+                .map(mapper::toDTO)
+                .toList();
 
         return new PageImpl<>(list, pageable, totalElement);
     }
@@ -121,6 +123,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         PageRequest pageRequest = PageRequest.of(page, size);
         return new PageImpl<>(dtoList, pageRequest, totalCount);
     }
+
+    @Override
+    public Employee getEmployee(@NotBlank @Valid String employeeId) {
+        return repository.findById(employeeId)
+                .orElseThrow(() -> new BadSituationException("Employee not found"));
+    }
+
     private Page<Employee> filterEmployees(FilterDTO filterDTO, int page, int size) {
 
         StringBuilder selectQuery = new StringBuilder("SELECT e FROM Employee e ");

@@ -1,6 +1,7 @@
 package HR_project.controllers;
 
 import HR_project.services.EmployeeService;
+import HR_project.services.TimeEntryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TimeEntryController {
 
-    private final EmployeeService employeeService;
+    private final TimeEntryService service;
+
+
+
 
 }

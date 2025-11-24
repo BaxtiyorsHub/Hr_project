@@ -3,6 +3,7 @@ package HR_project.services;
 import HR_project.dtos.FilterDTO;
 import HR_project.dtos.employee.EmployeeDTO;
 import HR_project.dtos.employee.EmployeeResponseDTO;
+import HR_project.entities.Employee;
 import jakarta.validation.Valid;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
@@ -51,4 +52,6 @@ public interface EmployeeService {
     Page<EmployeeResponseDTO> getAll(int page, int size);
 
     Page<EmployeeResponseDTO> search(int page, int size, FilterDTO filterQuery);
+
+    Employee getEmployee(String employeeId);
 }
