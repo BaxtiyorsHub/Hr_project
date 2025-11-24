@@ -4,6 +4,7 @@ import HR_project.dtos.time.TimeDTO;
 import HR_project.dtos.time.TimeEntryResponse;
 import HR_project.services.TimeEntryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,8 @@ public class TimeEntryController {
     }
 
     @PutMapping("/leave")
-    public ResponseEntity<TimeEntryResponse> leave(@RequestBody @Valid TimeDTO dto) {
-        return ResponseEntity.ok(service.leave(dto));
+    public ResponseEntity<TimeEntryResponse> leave(@RequestBody @NotBlank String employeeID) {
+        return ResponseEntity.ok(service.leave(employeeID));
     }
 
     @GetMapping("/weekly-report")

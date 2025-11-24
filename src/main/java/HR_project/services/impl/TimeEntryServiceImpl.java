@@ -2,6 +2,7 @@ package HR_project.services.impl;
 
 import HR_project.dtos.time.TimeDTO;
 import HR_project.dtos.time.TimeEntryResponse;
+import HR_project.entities.Employee;
 import HR_project.entities.TimeEntry;
 import HR_project.exceptions.BadSituationException;
 import HR_project.mapper.TimeEntryMapper;
@@ -9,6 +10,7 @@ import HR_project.repositories.TimeEntryRepository;
 import HR_project.services.TimeEntryService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,16 +52,16 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
     /**
      * Registers a check-out time for an employee
-     * @param dto TimeDTO containing employeeId
+     * @param employeeID ID of {@link Employee}
      * @return TimeEntryResponse with saved data
      * @throws BadSituationException if no check-in exists for today
      */
     @Override
     @Transactional
-    public TimeEntryResponse leave(@Valid TimeDTO dto) {
+    public TimeEntryResponse leave(@NotBlank String employeeID) {
         LocalDate today = LocalDate.now();
 
-        TimeEntry timeEntry = repository.findByEmployeeIdAndDate(dto.getEmployeeId(), today)
+        TimeEntry timeEntry = repository.findByEmployeeIdAndDate(employeeID, today)
                 .orElseThrow(() -> new BadSituationException("Cannot check out before check-in"));
 
         timeEntry.setCheckOutTime(LocalDateTime.now());

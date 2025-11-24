@@ -2,7 +2,9 @@ package HR_project.services;
 
 import HR_project.dtos.time.TimeDTO;
 import HR_project.dtos.time.TimeEntryResponse;
+import HR_project.entities.Employee;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 
 public interface TimeEntryService {
@@ -18,10 +20,10 @@ public interface TimeEntryService {
     /**
      * Records the check-out time for an employee and calculates late status if applicable.
      *
-     * @param dto the {@link TimeDTO} containing employee ID and check-out information
+     * @param employeeID ID of {@link Employee}
      * @return the updated {@link TimeEntryResponse} with check-out details
      */
-    TimeEntryResponse leave(@Valid TimeDTO dto);
+    TimeEntryResponse leave(@NotBlank String employeeID);
 
     /**
      * Retrieves paginated reports of time entries.
